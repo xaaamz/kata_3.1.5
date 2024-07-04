@@ -1,0 +1,34 @@
+package org.example.config;
+
+import org.example.model.Role;
+import org.example.model.User;
+import org.example.service.UserService;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class IniziBD {
+    private final UserService userService;
+
+    public IniziBD(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void  initializeUsers() {
+        User user = userService.findByEmail("admin@mail.ru");
+        if (user == null) {
+            Role userRole = new Role("ROLE_USER");
+            Role adminRole = new Role("ROLE_ADMIN");
+            List<Role> adminRoles = new ArrayList<>();
+            adminRoles.add(userRole);
+            adminRoles.add(adminRole);
+            User admin = new User(adminRoles, "xamz", "tutu",20L, "admin@mail.ru", "admin");
+
+            userService.save(admin);
+        }
+
+    }
+
+}
