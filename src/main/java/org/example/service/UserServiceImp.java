@@ -66,9 +66,8 @@ public class UserServiceImp implements UserService {
     @Transactional
     @Override
     public void update(User user) {
-        save(user);
+        userRepository.save(user);
     }
-
 
     @Transactional
     @Override

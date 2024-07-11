@@ -5,6 +5,7 @@ import org.example.model.User;
 import org.example.service.UserService;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class IniziBD {
         this.userService = userService;
     }
 
-    public void  initializeUsers() {
+    @PostConstruct
+    public void initializeUsers() {
         User user = userService.findByEmail("admin@mail.ru");
         if (user == null) {
             Role userRole = new Role("ROLE_USER");
@@ -24,9 +26,10 @@ public class IniziBD {
             List<Role> adminRoles = new ArrayList<>();
             adminRoles.add(userRole);
             adminRoles.add(adminRole);
-            User admin = new User(adminRoles, "xamz", "tutu",20L, "admin@mail.ru", "admin");
+            User admin = new User(adminRoles, "xamz", "tutu", 20L, "admin@mail.ru", "admin");
 
             userService.save(admin);
+
         }
 
     }
