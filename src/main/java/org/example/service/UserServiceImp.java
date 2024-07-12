@@ -1,6 +1,4 @@
 package org.example.service;
-
-import org.apache.catalina.realm.UserDatabaseRealm;
 import org.example.dao.RoleRepository;
 import org.example.dao.UserRepository;
 import org.example.model.Role;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -66,7 +63,18 @@ public class UserServiceImp implements UserService {
     @Transactional
     @Override
     public void update(User user) {
-        userRepository.save(user);
+        User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getPassword() != null && !user.getPassword().equals(existingUser.getPassword())) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName((user.getLastName()));
+        existingUser.setAge(user.getAge());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setEmail(user.getEmail());
+        userRepository.save(existingUser);
     }
 
     @Transactional
