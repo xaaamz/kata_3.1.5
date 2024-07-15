@@ -64,16 +64,15 @@ public class UserServiceImp implements UserService {
     @Override
     public void update(User user) {
         User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (user.getPassword() != null && !user.getPassword().equals(existingUser.getPassword())) {
+        if (user.getPassword() != null && !user.getPassword().isEmpty() && !user.getPassword().equals(existingUser.getPassword())) {
             existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
         existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName((user.getLastName()));
+        existingUser.setLastName(user.getLastName());
         existingUser.setAge(user.getAge());
         existingUser.setEmail(user.getEmail());
-        existingUser.setEmail(user.getEmail());
+        existingUser.setRoles(user.getRoles());
         userRepository.save(existingUser);
     }
 

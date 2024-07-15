@@ -25,6 +25,7 @@ async function fillModalForm(form, modal, id) {
     form.lastName.value = user.lastName
     form.age.value = user.age
     form.email.value = user.email
+    form.password.value = user.password
 }
 
 
